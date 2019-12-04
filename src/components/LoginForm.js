@@ -1,18 +1,23 @@
 import React, { Component } from "react";
-import { Text, AsyncStorage  } from "react-native";
+import { Text } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import { Card, CardSection, Button, Input, Spinner } from "./common";
 import { LOGIN_URL } from "../config/URL"
 
 class LoginForm extends Component {
-  state = {
-    email: "",
-    password: "",
-    error: "",
-    loading: false
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      error: "",
+      loading: false
+    };
+    this.saveKey = this.saveKey.bind(this);
+  }
+
 
   onButtonPress() {
-    const token = '';
     const { email, password } = this.state;
     this.setState({ error: "", loading: true });
 
@@ -30,12 +35,22 @@ class LoginForm extends Component {
   .then(response => response.json())
   .then(json =>{
     console.log('JSON',json.access_token);
+    const value = json.access_token;
+    this.saveKey(value);
     this.onloginSuccess.bind(this);
-    // AsyncStorage.setItem(token, 'json.access_token');
  })
   .catch((error) => {
     console.log('ERROR',error)
 })
+  }
+
+  async saveKey(value) {
+    try {
+      await AsyncStorage.setItem('@token', value);
+      console.log('se guardo la key');
+    } catch (error) {
+      console.log("Error saving data" + error);
+    }
   }
 
   onLoginFaild() {

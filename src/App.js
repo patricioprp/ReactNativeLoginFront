@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Text, View } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
-import { Header, Button, Spinner, CardSection } from "./components/common";
+import { Header, Button, Spinner, CardSection, } from "./components/common";
 import LoginForm from "./components/LoginForm";
 import { USER_URL, LOGOUT_URL} from "./config/URL"
 //Para el BackEnd////
@@ -116,6 +116,8 @@ this.getKey().then(value => {
       <View>
         <Header headerText="Autenticacion" />
         {this.renderContent()}
+        <Text>Usuario:{this.state.user.name}</Text>
+        <Text>Correo:{this.state.user.email}</Text>
       </View>
     );
   }

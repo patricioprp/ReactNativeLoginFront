@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import { Card, CardSection, Button, Input, Spinner } from "./common";
-import { LOGIN_URL } from "../config/URL"
+import { LOGIN_URL } from "../config/URL";
 
 class LoginForm extends Component {
   constructor(props){
@@ -14,6 +14,9 @@ class LoginForm extends Component {
       loading: false
     };
     this.saveKey = this.saveKey.bind(this);
+    this.onloginSuccess =  this.onloginSuccess.bind(this);
+    this.onLoginFaild = this.onLoginFaild.bind(this);
+
   }
 
 
@@ -34,14 +37,22 @@ class LoginForm extends Component {
   })
   .then(response => response.json())
   .then(json =>{
-    console.log('JSON',json.access_token);
-    const value = json.access_token;
-    this.saveKey(value);
-    this.onloginSuccess.bind(this);
+      if(json.error){
+        this.onLoginFaild();
+      }
+      else{
+        console.log('JSON',json.access_token);
+        const value = json.access_token;
+        this.saveKey(value); 
+        this.onloginSuccess();
+      }
+
  })
   .catch((error) => {
-    console.log('ERROR',error)
+    console.log('ERROR',error);
+    this.onLoginFaild();
 })
+
   }
 
   async saveKey(value) {

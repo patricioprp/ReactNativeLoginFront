@@ -86,7 +86,10 @@ this.getKey().then(value => {
 .then(response => response.json())
 .then(json =>{
    console.log('JSON',json);
-   this.setState({loggeIn: false});
+   this.setState({
+     loggeIn: false,
+     user:''
+    });
 
 })
 .catch((error) => {

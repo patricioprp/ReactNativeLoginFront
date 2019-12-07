@@ -1,4 +1,4 @@
-const BASE_URL = 'http://192.168.43.21:8008'
+const BASE_URL = 'http://192.168.1.24:8008'
 const API_URL = '/api'
 export const LOGIN_URL = BASE_URL + API_URL + '/auth/login'
 export const USER_URL = BASE_URL + API_URL + '/auth/me'

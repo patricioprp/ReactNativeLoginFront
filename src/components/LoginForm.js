@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Text } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import { Card, CardSection, Button, Input, Spinner } from "./common";
+import Login from "./Login";
+import App from "../App";
 import { LOGIN_URL } from "../config/URL";
-
+ 
 class LoginForm extends Component {
   constructor(props){
     super(props);
@@ -11,7 +13,8 @@ class LoginForm extends Component {
       email: "",
       password: "",
       error: "",
-      loading: false
+      loading: false,
+      load: false
     };
     this.saveKey = this.saveKey.bind(this);
     this.onloginSuccess =  this.onloginSuccess.bind(this);
@@ -41,10 +44,11 @@ class LoginForm extends Component {
         this.onLoginFaild();
       }
       else{
+
         console.log('JSON',json.access_token);
         const value = json.access_token;
         this.saveKey(value); 
-        this.onloginSuccess();
+       // this.onloginSuccess();
       }
 
  })
@@ -59,6 +63,7 @@ class LoginForm extends Component {
     try {
       await AsyncStorage.setItem('@token', value);
       console.log('se guardo la key');
+      this.onloginSuccess();
     } catch (error) {
       console.log("Error saving data" + error);
     }
@@ -78,11 +83,12 @@ class LoginForm extends Component {
       email: "",
       password: "",
       loading: false,
+      load: true,
       error: ""
     });
   }
-
   renderButton() {
+
     if (this.state.loading) {
       return <Spinner size="small" />;
     }
@@ -90,29 +96,34 @@ class LoginForm extends Component {
   }
 
   render() {
-    return (
-      <Card>
-        <CardSection>
-          <Input
-            placeholder="user@gmail.com"
-            label="Email"
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
-          />
-        </CardSection>
-        <CardSection>
-          <Input
-            secureTextEntry
-            placeholder="password"
-            label="Password"
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
-          />
-        </CardSection>
-        <Text style={styles.errorTextStyles}>{this.state.error}</Text>
-        <CardSection>{this.renderButton()}</CardSection>
-      </Card>
-    );
+if(this.state.load){
+return <Login />;
+}
+else{
+  return (
+    <Card>
+      <CardSection>
+        <Input
+          placeholder="user@gmail.com"
+          label="Email"
+          value={this.state.email}
+          onChangeText={email => this.setState({ email })}
+        />
+      </CardSection>
+      <CardSection>
+        <Input
+          secureTextEntry
+          placeholder="password"
+          label="Password"
+          value={this.state.password}
+          onChangeText={password => this.setState({ password })}
+        />
+      </CardSection>
+      <Text style={styles.errorTextStyles}>{this.state.error}</Text>
+      <CardSection>{this.renderButton()}</CardSection>
+    </Card>
+  );
+}
   }
 }
 

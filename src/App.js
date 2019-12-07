@@ -3,7 +3,8 @@ import { Text, View } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
 import { Header, Button, Spinner, CardSection, } from "./components/common";
 import LoginForm from "./components/LoginForm";
-import { USER_URL, LOGOUT_URL} from "./config/URL"
+import { USER_URL, LOGOUT_URL} from "./config/URL";
+import  Login  from "./components/Login";
 //Para el BackEnd////
 //https://medium.com/@experttyce/c%C3%B3mo-crear-un-api-rest-con-laravel-5-7-y-jwt-token-94b79c533c6d
 //https://github.com/barryvdh/laravel-cors
@@ -57,7 +58,6 @@ this.getKey().then(value => {
     console.log('loggeIn',this.state.loggeIn);
  })
   });
-
 }
 
   async getKey() {
@@ -69,6 +69,8 @@ this.getKey().then(value => {
       console.log("Error retrieving data" + error);
     };
   }
+
+
   onButtonPressLogout()
   {
 this.getKey().then(value => {
@@ -95,17 +97,14 @@ this.getKey().then(value => {
 .catch((error) => {
   console.log('ERROR',error)
 })
-});
-   
+});   
   }
 
   renderContent() {
     switch (this.state.loggeIn) {
       case true:
         return (
-          <CardSection>
-            <Button onPress={this.onButtonPressLogout.bind(this)}>Salir</Button>
-          </CardSection>
+<Login />
         );
       case false:
         return <LoginForm />;
@@ -119,8 +118,6 @@ this.getKey().then(value => {
       <View>
         <Header headerText="Autenticacion" />
         {this.renderContent()}
-        <Text>Usuario:{this.state.user.name}</Text>
-        <Text>Correo:{this.state.user.email}</Text>
       </View>
     );
   }
